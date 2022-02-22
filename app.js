@@ -3,11 +3,10 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const Fs = require('fs');
-const CsvReadableStream = require('csv-reader');
 
 const postRoute = require('./routes/postRoute');
 const userRoute = require('./routes/userRoute');
+const importRoute = require('./routes/importRoute');
 const mongoose = require('mongoose');
 
 
@@ -31,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/posts', postRoute);
 app.use('/users', userRoute);
+app.use('/import', importRoute);
 
 
 // catch 404 and forward to error handler

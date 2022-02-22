@@ -3,56 +3,56 @@ const Comment = require('../models/post');
 
 const getAll = async (req, res) => {
   
-  const posts = await Post.find();
+  const comments = await Comment.find();
      
   res.send({
     error: false,
-    message: `All posts from the database`,
-    posts: posts
+    message: `All comments from the database`,
+    comments: comments
   });
 };
 
 const getById = async (req, res) => {
 
-    const posts = await Post.findById(req.params.id);
+    const comments = await Comment.findById(req.params.id);
 
     res.send({
       error: false,
-      message: `Post with id #${posts._id}, has been fetched`,
-      posts: posts,
+      message: `Comment with id #${comments._id}, has been fetched`,
+      comments: comments,
     });
   };
 
 
 const postCreate = async (req, res) => {
 
-  const post = await Post.create(req.body);
+  const comment = await Comment.create(req.body);
 
   res.send({
     error: false,
-    message: 'New post has been created',
-    post: post
+    message: 'New comment has been created',
+    comment: comment
   });
 };
 
 const postUpdate = async (req, res) => {
-  await Post.findByIdAndUpdate(req.params.id, req.body);
-  const post = await Post.findById(req.params.id);
+  await Comment.findByIdAndUpdate(req.params.id, req.body);
+  const comment = await Comment.findById(req.params.id);
                                                       
   res.send({
     error: false,
-    message: `Post with id #${post._id} has been updated`,
-    post: post
+    message: `Comment with id #${post._id} has been updated`,
+    comment: comment
   });
 };
 
 const getDeleted = async (req, res) => {
 
-  await Post.findByIdAndDelete(req.params.id);
+  await Comment.findByIdAndDelete(req.params.id);
 
   res.send({
     error: false,
-    message: `Post with id #${req.params.id} has been deleted`
+    message: `Comment with id #${req.params.id} has been deleted`
   });
 };
 
