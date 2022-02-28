@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
-const response = require('../contro');
+const response = require('../lib/response_handler');
 
 const getAll = async (req, res) => {
 
