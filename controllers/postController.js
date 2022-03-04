@@ -21,8 +21,7 @@ const getById = async (req, res) => {
       message: `Post with id #${posts._id}, has been fetched`,
       posts: posts,
     });
-  };
-
+};
 
 const postCreate = async (req, res) => {
 

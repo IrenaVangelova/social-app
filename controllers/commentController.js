@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const Comment = require('../models/post');
+const Comment = require('../models/comment');
 
 const getAll = async (req, res) => {
 
-  const comments = await Comment.find();
+  const comments = await Comment.find().populate('user').populate('post', 'title');
 
   res.send({
     error: false,
@@ -22,7 +22,6 @@ const getById = async (req, res) => {
     comments: comments,
   });
 };
-
 
 const postCreate = async (req, res) => {
 
