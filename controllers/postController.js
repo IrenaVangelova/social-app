@@ -3,7 +3,7 @@ const Post = require('../models/post');
 
 const getAll = async (req, res) => {
   
-  const posts = await Post.find();
+  const posts = await Post.find().populate('user');
      
   res.send({
     error: false,

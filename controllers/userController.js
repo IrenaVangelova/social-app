@@ -16,7 +16,7 @@ const jwt = require('jsonwebtoken');
 
 const getAll = async (req, res) => {
 
-  const users = await User.find().populate('post');
+  const users = await User.find();
 
   res.send({
     error: false,
@@ -56,15 +56,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    /**
-     * Tuka korisnikot mi ispratil email i password
-     * 1. Od baza probaj da zemes korisnik so dadeniot email
-     * 2. Treba da proveram dali postoi korisnik so toj email
-     * 2.a. Dokolku postoi, da gi sporedam password-ite
-     * 2.a.1 Dokolku passwordite se ok, vrakjam token
-     * 2.a.2 Dokolku passwordite ne se ok, vrakjam response za invalid credentials
-     * 2.b. Dokolku ne postoi, da vratam nekakov response za invalid credentials
-     */
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {

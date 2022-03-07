@@ -3,13 +3,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mongoose = require('mongoose');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const postRoute = require('./routes/postRoute');
 const userRoute = require('./routes/userRoute');
 const commentRoute = require('./routes/commentRoute');
 const importRoute = require('./routes/importRoute');
-const mongoose = require('mongoose');
-
 
 
 // MVC: Model View Controller
@@ -23,6 +24,39 @@ require('dotenv').config();
 // // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'ejs');
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Social network API",
+      description: "Users posting and commenting on stuff",
+      contact: {
+        name: "Irena Vangelova",
+      },
+      tags: [
+        {
+        name: "users",
+        description: "All users from database"
+        },
+        {
+        name: "posts",
+        description: "All posts from database"
+        },
+        {
+          name: "comments",
+          description: "All comments from database"
+        }
+      ],
+      servers: ["http://localhost:3000"],
+    },
+  },
+  //Routes defined
+  apis: ["./routes/*.js"],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 app.use(logger('dev'));
