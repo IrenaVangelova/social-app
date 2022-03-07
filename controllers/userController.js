@@ -16,7 +16,7 @@ const jwt = require('jsonwebtoken');
 
 const getAll = async (req, res) => {
 
-  const users = await User.find().populate('post comment');
+  const users = await User.find().populate('post');
 
   res.send({
     error: false,
