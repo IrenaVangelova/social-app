@@ -1,8 +1,12 @@
-const mongoose = require('mongoose');
+
 const Post = require('../models/post');
+const axios = require('axios');
 
 const getAll = async (req, res) => {
-  
+
+  // const getApiResponse = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=42&lon=21&units=metric&appid=${process.env.WEATHER_API_URL}`);
+  // console.log(getApiResponse.data.main) 
+
   const posts = await Post.find().populate('user');
      
   res.send({
@@ -24,6 +28,18 @@ const getById = async (req, res) => {
 };
 
 const postCreate = async (req, res) => {
+
+  var config ={
+    method: 'get',
+    url: `http://api.openweathermap.org/data/2.5/weather?lat=41.9981&lon=21.4254&units=metric&appid=${process.env.WEATHER_API_URL}`,
+    headers: {
+      'api-key': `${process.env.WEATHER_API_URL}`
+    }
+  }
+
+  const responseWeather = await axios(config);
+  req.body.weatherCity = responseWeather.data.name
+  req.body.weatherTemp= responseWeather.data.main.temp;
 
   const post = await Post.create(req.body);
 

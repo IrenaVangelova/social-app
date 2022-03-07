@@ -12,7 +12,15 @@ const postSchema = mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: 'user'
-  }
+  },
+  weatherCity: {
+    type: String,
+    required: false
+  },
+  weatherTemp: {
+    type: String,
+    required: false
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('post', postSchema);
