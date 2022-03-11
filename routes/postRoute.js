@@ -58,6 +58,7 @@ router.get('/', controller.getAll)
  *            required:
  *              - title
  *              - content
+ *              - user
  *            properties:
  *              title:
  *                type: string
@@ -65,6 +66,9 @@ router.get('/', controller.getAll)
  *              content:
  *                type: string
  *                default: Dessert
+ *              user:
+ *                type: string
+ *                default: id of the user that created this post
  *     responses:
  *      201:
  *        description: Created

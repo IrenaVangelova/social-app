@@ -1,6 +1,14 @@
 
 const Post = require('../models/post');
 const axios = require('axios');
+const AccessControl = require('accesscontrol');
+const ac = new AccessControl();
+const responseHandler = require('../lib/response_handler');
+const cron = require('../jobs/cronjob');
+const nodemailer = require('nodemailer');
+
+ac.grant('user').createOwn('post');
+ac.deny('admin').createOwn('post');
 
 const getAll = async (req, res) => {
 
@@ -40,6 +48,14 @@ const postCreate = async (req, res) => {
   const responseWeather = await axios(config);
   req.body.weatherCity = responseWeather.data.name
   req.body.weatherTemp= responseWeather.data.main.temp;
+
+
+  const permissions = ac.can(req.user.role).createOwn('post');
+
+  if(!permissions.granted){
+    responseHandler(res,401, `Cannot create post with role : ${req.user.role}`);
+    return;
+  }
 
   const post = await Post.create(req.body);
 
