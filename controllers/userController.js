@@ -5,16 +5,6 @@ const response = require('../lib/response_handler');
 const jwt = require('jsonwebtoken');
 
 
-/**
- * Authentication steps
- * 
- * 1. User registration
- *  - user enters basic information, email, password
- * 2. User login
- *  - if credentials (email and password) are valid, return valid JWT token
- *  - if not, return an error message
- */
-
 const getAll = async (req, res) => {
 
   const users = await User.find();
@@ -84,6 +74,50 @@ const login = async (req, res) => {
   }
 }
 
+const followFriend = async (req, res) => {
+
+  if(req.body.user !== req.params.id){
+    try{
+      const user = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.user);
+      if(!user.followers.includes(req.body.user)){
+        await user.updateOne({$push: {followers: req.body.user}});
+        await currentUser.updateOne({$push: {followings: req.params.id}});
+        response(res,200, 'user has been followed')
+      }else{
+        response(res,403, "You already follow this user")
+      }
+    } catch(err){
+      response(res,500,err)
+    }
+  }
+  else {
+    response(res, 403 , "You cant follow yourself")
+  }
+};
+
+const unfollowFriend = async (req, res) => {
+
+  if(req.body.user !== req.params.id){
+    try{
+      const user = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.user);
+      if(user.followers.includes(req.body.user)){
+        await user.updateOne({$pull: {followers: req.body.user}});
+        await currentUser.updateOne({$pull: {followings: req.params.id}});
+        response(res,200, 'user has been unfollowed')
+      }else{
+        response(res,403, "You dont follow this user")
+      }
+    } catch(err){
+      response(res,500, err)
+    }
+  }
+  else {
+    response(res, 403 , "You cant unfollow yourself")
+  }
+};
+
 const postUpdate = async (req, res) => {
   await User.findByIdAndUpdate(req.params.id, req.body);
   const user = await User.findById(req.params.id);
@@ -111,5 +145,7 @@ module.exports = {
   register,
   login,
   postUpdate,
-  getDeleted
+  getDeleted,
+  followFriend,
+  unfollowFriend
 }

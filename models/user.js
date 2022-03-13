@@ -20,6 +20,16 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  followers: {
+    type: Array,
+    default: [],
+    required: false
+  },
+  followings: {
+    type: Array,
+    default: [],
+    required: false
   }
 }, { timestamps: true });
 

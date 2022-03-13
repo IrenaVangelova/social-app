@@ -18,7 +18,7 @@ const app = express();
 mongoose.connect('mongodb://localhost:27017/social-app');
 
 require('dotenv').config();
-require('./jobs/cronjob');
+// require('./jobs/cronjob');
 
 // // view engine setup
 // app.set('views', path.join(__dirname, 'views'));

@@ -228,5 +228,9 @@ router.post('/:id/update', controller.postUpdate)
  */
 router.delete('/:id', controller.getDeleted)
 
+router.post("/:id/addfriend", controller.followFriend);
+
+router.post("/:id/removefriend", controller.unfollowFriend);
+
 module.exports = router;
 

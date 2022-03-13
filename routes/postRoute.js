@@ -183,4 +183,6 @@ router.post('/:id/update', controller.postUpdate)
  */
 router.delete('/:id', controller.getDeleted)
 
+router.post('/:id/like', controller.likeAndDislikePost)
+
 module.exports = router;

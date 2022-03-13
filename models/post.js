@@ -13,6 +13,10 @@ const postSchema = mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'user'
   },
+  likes: {
+    type: Array,
+    default: []
+  },
   weatherCity: {
     type: String,
     required: false
@@ -20,7 +24,7 @@ const postSchema = mongoose.Schema({
   weatherTemp: {
     type: String,
     required: false
-  },
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('post', postSchema);
