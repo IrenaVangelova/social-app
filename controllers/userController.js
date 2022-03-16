@@ -159,7 +159,7 @@ const remove = async (req, res) => {
     error: false,
     message: `User with id #${req.params.id} has been deleted`
   });
-};
+}; 
 
 module.exports = {
   all,
