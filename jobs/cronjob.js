@@ -37,3 +37,11 @@
 // });
 
 // job.start();
+
+const schedule = require('node-schedule');
+const date = new Date(2022, 2, 16, 14, 46, 0);
+
+const job = schedule.scheduleJob(date, function(){
+  console.log('The world is going to end today.');
+  job.cancel()
+});

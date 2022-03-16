@@ -3,9 +3,10 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const response = require('../lib/response_handler');
 const jwt = require('jsonwebtoken');
+const Friendship = require('../models/friendship');
 
 
-const getAll = async (req, res) => {
+const all = async (req, res) => {
 
   const users = await User.find();
 
@@ -16,7 +17,7 @@ const getAll = async (req, res) => {
   });
 };
 
-const getById = async (req, res) => {
+const byId = async (req, res) => {
 
   const users = await User.findById(req.params.id);
 
@@ -118,7 +119,7 @@ const unfollowFriend = async (req, res) => {
   }
 };
 
-const postUpdate = async (req, res) => {
+const update = async (req, res) => {
   await User.findByIdAndUpdate(req.params.id, req.body);
   const user = await User.findById(req.params.id);
 
@@ -129,7 +130,28 @@ const postUpdate = async (req, res) => {
   });
 };
 
-const getDeleted = async (req, res) => {
+const addFriend = async (req, res) => {
+  console.log(req.user);
+  try {
+    const userTwo = await User.findById(req.params.id);
+
+    if (!userTwo) {
+      response(res, 404, 'Cannot add to friends a user that doesn\'t exist.');
+      return;
+    }
+
+    const friendship = await Friendship.create({
+      user_one: req.user.id,
+      user_two: userTwo._id
+    })
+
+    response(res, 201, `User with id #${req.user.id} has added to friends user with id #${req.params.id}.`, { friendship })
+  } catch (error) {
+    response(res, 500, error.message, { error })
+  }
+}
+
+const remove = async (req, res) => {
 
   await User.findByIdAndDelete(req.params.id);
 
@@ -140,12 +162,13 @@ const getDeleted = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
-  getById,
+  all,
+  byId,
   register,
   login,
-  postUpdate,
-  getDeleted,
+  update,
+  remove,
   followFriend,
-  unfollowFriend
+  unfollowFriend,
+  addFriend
 }

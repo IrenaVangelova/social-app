@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Comment = require('../models/comment');
 const response = require('../lib/response_handler');
 
-const getAll = async (req, res) => {
+const all = async (req, res) => {
 
   const comments = await Comment.find().populate({
     path: 'post',
@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
   });
 };
 
-const getById = async (req, res) => {
+const byId = async (req, res) => {
 
   const comments = await Comment.findById(req.params.id);
 
@@ -29,7 +29,7 @@ const getById = async (req, res) => {
   });
 };
 
-const postCreate = async (req, res) => {
+const create = async (req, res) => {
 
   const comment = await Comment.create(req.body);
 
@@ -40,7 +40,7 @@ const postCreate = async (req, res) => {
   });
 };
 
-const postUpdate = async (req, res) => {
+const update = async (req, res) => {
   await Comment.findByIdAndUpdate(req.params.id, req.body);
   const comment = await Comment.findById(req.params.id);
 
@@ -51,7 +51,7 @@ const postUpdate = async (req, res) => {
   });
 };
 
-const getDeleted = async (req, res) => {
+const remove = async (req, res) => {
 
   await Comment.findByIdAndDelete(req.params.id);
 
@@ -61,7 +61,7 @@ const getDeleted = async (req, res) => {
   });
 };
 
-const likeAndDislikeComment = async (req, res) => {
+const likeAndDislike = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
 
@@ -78,10 +78,10 @@ const likeAndDislikeComment = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
-  getById,
-  postCreate,
-  postUpdate,
-  getDeleted,
-  likeAndDislikeComment
+  all,
+  byId,
+  create,
+  update,
+  remove,
+  likeAndDislike
 }

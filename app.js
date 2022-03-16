@@ -7,10 +7,9 @@ const mongoose = require('mongoose');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-const postRoute = require('./routes/postRoute');
-const userRoute = require('./routes/userRoute');
-const commentRoute = require('./routes/commentRoute');
-const importRoute = require('./routes/importRoute');
+const postRoute = require('./routes/post');
+const userRoute = require('./routes/user');
+const commentRoute = require('./routes/comment');
 
 // MVC: Model View Controller
 
@@ -18,7 +17,7 @@ const app = express();
 mongoose.connect('mongodb://localhost:27017/social-app');
 
 require('dotenv').config();
-// require('./jobs/cronjob');
+require('./jobs/cronjob');
 
 // // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
@@ -67,7 +66,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/posts', postRoute);
 app.use('/users', userRoute);
 app.use('/comments', commentRoute);
-app.use('/import', importRoute);
 
 
 // catch 404 and forward to error handler

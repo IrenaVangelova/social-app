@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const controller = require('../controllers/commentController');
+const controller = require('../controllers/postController');
 const jwt = require('express-jwt');
 const response = require('../lib/response_handler');
 
@@ -12,10 +12,10 @@ router.use(jwt({
 }).unless({
       path: [
             {
-                  url: '/comments', methods: ['GET']
+                  url: '/posts', methods: ['GET']
             },
             {
-                  url: /^\/comments\/.*/, methods: ['GET'] // Read more about regex
+                  url: /^\/posts\/.*/, methods: ['GET'] // Read more about regex
             }
       ]
 }));
@@ -29,24 +29,24 @@ router.use((err, req, res, next) => {
 
 /**
  * @swagger
- * /comments:
+ * /posts:
  *     get:
  *           tags:
- *                - comments
+ *                - posts
  *           description: Text
  *           responses:
  *                 200:
  *                       description: Successful
 */
-router.get('/', controller.getAll)
+router.get('/', controller.all)
 
 /**
  * @swagger
- * /comments:
+ * /posts:
  *   post:
  *     tags:
- *          - comments
- *     summary: Create comment
+ *          - posts
+ *     summary: Create post
  *     security:
  *          - bearerAuth: []
  *     requestBody:
@@ -56,14 +56,24 @@ router.get('/', controller.getAll)
  *           schema:
  *            type: object
  *            required:
+ *              - title
  *              - content
+ *              - user
  *            properties:
+ *              title:
+ *                type: string
+ *                default: Food
  *              content:
  *                type: string
- *                default: Food is amazing
+ *                default: Dessert
+ *              user:
+ *                type: string
+ *                default: id of the user that created this post
  *     responses:
  *      201:
  *        description: Created
+ *      400:
+ *        description: post exists
  *      500:
  *        description: Error
  * components:
@@ -73,20 +83,20 @@ router.get('/', controller.getAll)
  *     scheme: bearer
  *     bearerFormat: JWT 
  */
-router.post('/', controller.postCreate)
+router.post('/', controller.create)
 
 /**
  * @swagger
- * /comments/{id}:
+ * /posts/{id}:
  *  get:
  *    tags:
- *          - comments
- *    summary: Get comment by id
- *    description: Get method to show all comments
+ *          - posts
+ *    summary: Get user by id
+ *    description: Get method to show all posts
  *    parameters:
  *      - name: id
  *        in: path
- *        description: ID of a comment in database
+ *        description: ID of a post in database
  *        required: true
  *        schema:
  *          type: string
@@ -94,21 +104,21 @@ router.post('/', controller.postCreate)
  *      200:
  *        description: Successful response
  */
-router.get('/:id', controller.getById)
+router.get('/:id', controller.byId)
 
 /**
  * @swagger
- * /comments/{id}/update:
+ * /posts/{id}/update:
  *   post:
  *     tags:
- *          - comments
- *     summary: Update comment
+ *          - posts
+ *     summary: Update post
  *     security:
  *      - bearerAuth: []
  *     parameters:
  *      - name: id
  *        in: path
- *        description: ID of a comment in database
+ *        description: ID of a post in database
  *        required: true
  *        schema:
  *          type: string
@@ -119,11 +129,15 @@ router.get('/:id', controller.getById)
  *           schema:
  *            type: object
  *            required:
+ *              - title
  *              - content
  *            properties:
+ *              title:
+ *                type: string
+ *                default: Food
  *              content:
  *                type: string
- *                default: Food is amazing
+ *                default: Dessert
  *     responses:
  *      201:
  *        description: Updated
@@ -138,22 +152,22 @@ router.get('/:id', controller.getById)
  *
  *
  */
-router.post('/:id/update', controller.postUpdate)
+router.post('/:id/update', controller.update)
 
 /**
  * @swagger
- * /comments/{id}:
+ * /posts/{id}:
  *  delete:
  *    tags:
- *          - comments
+ *          - posts
  *    summary: Delete post by id
- *    description: Delete method to delete comment by id
+ *    description: Delete method to delete post by id
  *    security:
  *          - bearerAuth: []
  *    parameters:
  *      - name: id
  *        in: path
- *        description: ID of a comment in database
+ *        description: ID of a post in database
  *        required: true
  *        schema:
  *          type: string
@@ -167,8 +181,8 @@ router.post('/:id/update', controller.postUpdate)
  *     scheme: bearer
  *     bearerFormat: JWT 
  */
-router.delete('/:id', controller.getDeleted)
+router.delete('/:id', controller.remove)
 
-router.post('/:id/like', controller.likeAndDislikeComment)
+router.post('/:id/like', controller.likeAndDislike)
 
 module.exports = router;

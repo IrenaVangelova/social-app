@@ -5,7 +5,6 @@ const jwt = require('express-jwt');
 const response = require('../lib/response_handler');
 
 
-
 require('dotenv').config();
 
 router.use(jwt({
@@ -13,12 +12,6 @@ router.use(jwt({
       algorithms: ['HS256'] 
 }).unless({
       path: [
-            {
-                  url: '/users', methods: ['GET']
-            },
-            {
-                  url: /^\/users\/.*/, methods: ['GET'] // Read more about regex
-            },
             {
                   url: '/users', methods: ['POST']
             },
@@ -46,7 +39,7 @@ router.use((err, req, res, next) => {
  *                 200:
  *                       description: Successful
 */
-router.get('/', controller.getAll)
+router.get('/', controller.all)
 
 /**
  * @swagger
@@ -141,7 +134,7 @@ router.post('/login', controller.login)
  *      200:
  *        description: Successful response
  */
-router.get('/:id', controller.getById)
+router.get('/:id', controller.byId)
 
 /**
  * @swagger
@@ -197,7 +190,7 @@ router.get('/:id', controller.getById)
  *
  *
  */
-router.post('/:id/update', controller.postUpdate)
+router.post('/:id/update', controller.update)
 
 /**
  * @swagger
@@ -226,11 +219,13 @@ router.post('/:id/update', controller.postUpdate)
  *     scheme: bearer
  *     bearerFormat: JWT 
  */
-router.delete('/:id', controller.getDeleted)
+router.delete('/:id', controller.remove)
 
-router.post("/:id/addfriend", controller.followFriend);
+router.post("/:id/follow", controller.followFriend);
 
-router.post("/:id/removefriend", controller.unfollowFriend);
+router.post("/:id/unfollow", controller.unfollowFriend);
+
+router.post('/:id/add-friend', controller.addFriend)
 
 module.exports = router;
 

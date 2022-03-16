@@ -11,7 +11,7 @@ const nodemailer = require('nodemailer');
 ac.grant('user').createOwn('post');
 ac.deny('admin').createOwn('post');
 
-const getAll = async (req, res) => {
+const all = async (req, res) => {
 
   // const getApiResponse = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=42&lon=21&units=metric&appid=${process.env.WEATHER_API_URL}`);
   // console.log(getApiResponse.data.main) 
@@ -25,7 +25,7 @@ const getAll = async (req, res) => {
   });
 };
 
-const getById = async (req, res) => {
+const byId = async (req, res) => {
 
   const posts = await Post.findById(req.params.id);
 
@@ -36,7 +36,7 @@ const getById = async (req, res) => {
   });
 };
 
-const postCreate = async (req, res) => {
+const create = async (req, res) => {
 
   // var config ={
   //   method: 'get',
@@ -67,7 +67,7 @@ const postCreate = async (req, res) => {
   });
 };
 
-const postUpdate = async (req, res) => {
+const update = async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, req.body);
   const post = await Post.findById(req.params.id);
 
@@ -78,7 +78,7 @@ const postUpdate = async (req, res) => {
   });
 };
 
-const getDeleted = async (req, res) => {
+const remove = async (req, res) => {
 
   await Post.findByIdAndDelete(req.params.id);
 
@@ -88,7 +88,7 @@ const getDeleted = async (req, res) => {
   });
 };
 
-const likeAndDislikePost = async (req, res) => {
+const likeAndDislike = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -105,10 +105,10 @@ const likeAndDislikePost = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
-  getById,
-  postCreate,
-  postUpdate,
-  getDeleted,
-  likeAndDislikePost
+  all,
+  byId,
+  create,
+  update,
+  remove,
+  likeAndDislike
 }
