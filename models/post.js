@@ -24,7 +24,14 @@ const postSchema = mongoose.Schema({
   weatherTemp: {
     type: String,
     required: false
-  }
+  },
+  comments: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "comment",
+      required: false,
+    },
+  ],
 }, { timestamps: true });
 
 module.exports = mongoose.model('post', postSchema);

@@ -5,10 +5,10 @@ const commentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  post: [{
+  post: {
     type: mongoose.Types.ObjectId,
     ref: 'post'
-  }],
+  },
   likes: {
     type: Array,
     default: []

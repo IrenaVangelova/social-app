@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Comment = require('../models/comment');
 const response = require('../lib/response_handler');
+const Post = require('../models/post');
 
 const all = async (req, res) => {
 
@@ -31,7 +32,14 @@ const byId = async (req, res) => {
 
 const create = async (req, res) => {
 
-  const comment = await Comment.create(req.body);
+  const comment = await Comment.create({
+    ...req.body,
+    post: req.params.id,
+  });
+
+  await Post.findByIdAndUpdate(req.params.id, {
+    $push: { comments: comment._id },
+  });
 
   res.send({
     error: false,
@@ -85,3 +93,4 @@ module.exports = {
   remove,
   likeAndDislike
 }
+

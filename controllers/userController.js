@@ -151,6 +151,31 @@ const addFriend = async (req, res) => {
   }
 }
 
+const deleteFriend = async (req, res) => {
+  try {
+    await Friendship.findOneAndDelete({
+      $or: [
+        { 
+          $and: [
+            { user_one: req.user.id },
+            { user_two: req.params.id }
+          ] 
+        },
+        {
+          $and: [
+            { user_one: req.params.id },
+            { user_two: req.user.id }
+          ]
+        }
+      ]
+    });
+
+    response(res, 201, `User with id #${req.user.id} has deleted the friendship with user with id #${req.params.id}.`, { friendship })
+  } catch (error) {
+    response(res, 500, error.message, { error })
+  }
+}
+
 const remove = async (req, res) => {
 
   await User.findByIdAndDelete(req.params.id);
@@ -170,5 +195,6 @@ module.exports = {
   remove,
   followFriend,
   unfollowFriend,
-  addFriend
+  addFriend,
+  deleteFriend
 }

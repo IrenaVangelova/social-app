@@ -51,12 +51,12 @@ const create = async (req, res) => {
   // req.body.weatherTemp= responseWeather.data.main.temp;
 
 
-  // const permissions = ac.can(req.user.role).createOwn('post');
+  const permissions = ac.can(req.user.role).createOwn('post');
 
-  // if(!permissions.granted){
-  //   responseHandler(res,401, `Cannot create post with role : ${req.user.role}`);
-  //   return;
-  // }
+  if(!permissions.granted){
+    responseHandler(res,401, `Cannot create post with role : ${req.user.role}`);
+    return;
+  }
 
   const post = await Post.create(req.body);
 
@@ -80,7 +80,11 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
 
+  const post = await Post.findById(req.params.id);
   await Post.findByIdAndDelete(req.params.id);
+  post.comments.forEach(async (commentId) => {
+    await Comment.findByIdAndDelete(commentId);
+  });
 
   res.send({
     error: false,

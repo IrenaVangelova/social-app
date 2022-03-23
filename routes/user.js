@@ -225,7 +225,9 @@ router.post("/:id/follow", controller.followFriend);
 
 router.post("/:id/unfollow", controller.unfollowFriend);
 
-router.post('/:id/add-friend', controller.addFriend)
+router.post('/:id/add-friend', controller.addFriend);
+
+router.delete('/friend/:id', controller.deleteFriend)
 
 module.exports = router;
 
