@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const controller = require('../controllers/postController');
+const controller = require('../controllers/comments');
 const jwt = require('express-jwt');
 const response = require('../lib/response_handler');
 
@@ -12,10 +12,10 @@ router.use(jwt({
 }).unless({
       path: [
             {
-                  url: '/posts', methods: ['GET']
+                  url: '/comments', methods: ['GET']
             },
             {
-                  url: /^\/posts\/.*/, methods: ['GET'] // Read more about regex
+                  url: /^\/comments\/.*/, methods: ['GET'] // Read more about regex
             }
       ]
 }));
@@ -29,10 +29,10 @@ router.use((err, req, res, next) => {
 
 /**
  * @swagger
- * /posts:
+ * /comments:
  *     get:
  *           tags:
- *                - posts
+ *                - comments
  *           description: Text
  *           responses:
  *                 200:
@@ -42,11 +42,11 @@ router.get('/', controller.all)
 
 /**
  * @swagger
- * /posts:
+ * /comments:
  *   post:
  *     tags:
- *          - posts
- *     summary: Create post
+ *          - comments
+ *     summary: Create comment
  *     security:
  *          - bearerAuth: []
  *     requestBody:
@@ -56,24 +56,14 @@ router.get('/', controller.all)
  *           schema:
  *            type: object
  *            required:
- *              - title
  *              - content
- *              - user
  *            properties:
- *              title:
- *                type: string
- *                default: Food
  *              content:
  *                type: string
- *                default: Dessert
- *              user:
- *                type: string
- *                default: id of the user that created this post
+ *                default: Food is amazing
  *     responses:
  *      201:
  *        description: Created
- *      400:
- *        description: post exists
  *      500:
  *        description: Error
  * components:
@@ -87,16 +77,16 @@ router.post('/', controller.create)
 
 /**
  * @swagger
- * /posts/{id}:
+ * /comments/{id}:
  *  get:
  *    tags:
- *          - posts
- *    summary: Get user by id
- *    description: Get method to show all posts
+ *          - comments
+ *    summary: Get comment by id
+ *    description: Get method to show all comments
  *    parameters:
  *      - name: id
  *        in: path
- *        description: ID of a post in database
+ *        description: ID of a comment in database
  *        required: true
  *        schema:
  *          type: string
@@ -108,17 +98,17 @@ router.get('/:id', controller.byId)
 
 /**
  * @swagger
- * /posts/{id}/update:
+ * /comments/{id}/update:
  *   post:
  *     tags:
- *          - posts
- *     summary: Update post
+ *          - comments
+ *     summary: Update comment
  *     security:
  *      - bearerAuth: []
  *     parameters:
  *      - name: id
  *        in: path
- *        description: ID of a post in database
+ *        description: ID of a comment in database
  *        required: true
  *        schema:
  *          type: string
@@ -129,15 +119,11 @@ router.get('/:id', controller.byId)
  *           schema:
  *            type: object
  *            required:
- *              - title
  *              - content
  *            properties:
- *              title:
- *                type: string
- *                default: Food
  *              content:
  *                type: string
- *                default: Dessert
+ *                default: Food is amazing
  *     responses:
  *      201:
  *        description: Updated
@@ -156,18 +142,18 @@ router.post('/:id/update', controller.update)
 
 /**
  * @swagger
- * /posts/{id}:
+ * /comments/{id}:
  *  delete:
  *    tags:
- *          - posts
+ *          - comments
  *    summary: Delete post by id
- *    description: Delete method to delete post by id
+ *    description: Delete method to delete comment by id
  *    security:
  *          - bearerAuth: []
  *    parameters:
  *      - name: id
  *        in: path
- *        description: ID of a post in database
+ *        description: ID of a comment in database
  *        required: true
  *        schema:
  *          type: string
@@ -184,6 +170,5 @@ router.post('/:id/update', controller.update)
 router.delete('/:id', controller.remove)
 
 router.post('/:id/like', controller.likeAndDislike)
-
 
 module.exports = router;
