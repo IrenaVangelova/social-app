@@ -12,6 +12,7 @@ const usersRoute = require('./routes/users');
 const commentsRoute = require('./routes/comments');
 const paymentsRoute = require('./routes/payments');
 const productsRoute = require('./routes/products');
+const ordersRoute = require('./routes/orders');
 
 // MVC: Model View Controller
 
@@ -70,6 +71,7 @@ app.use('/users', usersRoute);
 app.use('/comments', commentsRoute);
 app.use('/payments', paymentsRoute);
 app.use('/products', productsRoute);
+app.use('/orders', ordersRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

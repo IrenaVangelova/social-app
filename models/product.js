@@ -18,7 +18,7 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    creator: {
+    user: {
       type: mongoose.Types.ObjectId,
       ref: 'user',
     },
